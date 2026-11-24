@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 香菜市集在彰化｜品牌地圖 Brand Map</title>
+<meta name="description" content="2026 香菜市集在彰化 線上品牌地圖：依分區瀏覽參展品牌、查詢攤位編號與位置。11/28–11/29 彰化員林圓林園滯洪池公園。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F3E8; --paper2:#EFE8DA; --ink:#1A1A1A; --ink2:#5B564D; --muted:#8C857A;
+  --orange:#E0603A; --green:#6A45E8; --green2:#BACF50; --lime:#BACF50; --violet:#7448F0; --yellow:#F2C94C; --beige:#CDBFA6;
+  --r:14px; --shadow:0 2px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:"Noto Sans TC",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+.num{font-family:"Space Grotesk","Noto Sans TC",sans-serif;font-weight:700;letter-spacing:.02em}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:10px 20px;background:var(--paper);border-bottom:2px solid var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
+.brand small{font-weight:500;color:var(--ink2)}
+.brand-logo{display:flex;align-items:center;gap:6px;font-size:18px;font-weight:900;letter-spacing:.08em}
+.brand-logo svg{flex:none}
+.tag{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--green);color:#fff;font-size:12px;font-weight:700;letter-spacing:.08em}
+.spacer{flex:1}
+.meta{font-size:13px;color:var(--ink2);white-space:nowrap}
+.jump{border:2px solid var(--ink);background:var(--yellow);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;box-shadow:var(--shadow)}
+.jump:active{transform:translateY(2px);box-shadow:none}
+
+.hero{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:40px;align-items:center;max-width:1180px;margin:0 auto;padding:36px 24px 28px}
+.kv{width:100%;height:auto;display:block;border:2px solid var(--ink);border-radius:18px;background:var(--lime)}
+.lead+.lead{margin-top:-10px}
+.hero h1 .nw{white-space:nowrap}
+.hero h1{font-size:clamp(26px,3.1vw,40px);line-height:1.2;margin:10px 0 6px;font-weight:900;letter-spacing:.03em}
+.hero .en{font-size:15px;letter-spacing:.14em;color:var(--ink2);font-weight:700}
+.lead{color:var(--ink2);margin:14px 0 22px;max-width:36em}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:560px}
+.fact{border:2px solid var(--ink);border-radius:var(--r);padding:12px 14px;background:#fff}
+.fact b{display:block;font-size:22px}
+.fact span{font-size:12.5px;color:var(--ink2)}
+.how{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--ink2)}
+.how i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;margin-right:6px}
+
+.app{scroll-margin-top:56px;display:grid;grid-template-columns:390px minmax(0,1fr);height:calc(100vh - 56px);min-height:600px;border-top:2px solid var(--ink)}
+.panel{min-width:0;display:flex;flex-direction:column;min-height:0;border-right:2px solid var(--ink);background:var(--paper)}
+.panel-head{padding:16px 16px 12px;border-bottom:2px solid var(--ink)}
+.search{display:flex;align-items:center;gap:8px;border:2px solid var(--ink);border-radius:999px;background:#fff;padding:8px 14px}
+.search input{flex:1;border:0;outline:0;font:inherit;font-size:15px;background:transparent;min-width:0}
+.clear{border:0;background:var(--paper2);border-radius:50%;width:22px;height:22px;line-height:20px;font-size:14px;display:none}
+.crumb{display:flex;align-items:center;gap:10px;margin-top:12px;min-height:34px}
+.back{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:3px 12px 3px 10px;font-size:13.5px;font-weight:700;display:none}
+.back:hover{background:var(--yellow)}
+.crumb .title{font-weight:900;font-size:16px;display:flex;align-items:center;gap:8px}
+.crumb .title .sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font:700 12px "Space Grotesk"}
+.crumb .sub{font-size:12.5px;color:var(--muted)}
+.list{flex:1;overflow-y:auto;padding:8px 12px 24px;overscroll-behavior:contain}
+
+.zcard{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;border:2px solid var(--ink);background:#fff;border-radius:16px;padding:12px 14px;margin:8px 0;box-shadow:var(--shadow)}
+.zcard:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--ink)}
+.zcard:active{transform:translateY(2px);box-shadow:none}
+.zcard .letter{width:54px;height:54px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-size:24px}
+.zcard .letter.txt{font-size:14px;font-family:"Noto Sans TC";font-weight:900;border-radius:14px;line-height:1.2;text-align:center}
+.zcard b{display:block;font-size:16px}
+.zcard span{display:block;font-size:12.5px;color:var(--ink2)}
+.zcard .go{font-size:20px;font-weight:700}
+.note{font-size:12.5px;color:var(--muted);margin:12px 4px 4px;line-height:1.6}
+
+.group-h{position:sticky;top:-8px;z-index:1;background:var(--paper);padding:12px 4px 6px;font-weight:900;font-size:14px;display:flex;align-items:center;gap:8px}
+.group-h .sw{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.group-h small{font-weight:500;color:var(--muted)}
+.item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border-radius:12px;padding:8px 8px;cursor:pointer}
+.item:hover{background:var(--paper2)}
+.item[aria-current="true"]{background:#fff;outline:2px solid var(--ink)}
+.badge{flex:none;min-width:58px;text-align:center;border:2px solid var(--ink);border-radius:999px;padding:2px 8px;font-size:13px;background:var(--zc)}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item.pending .t b{color:var(--muted);font-weight:500}
+.fav{flex:none;border:0;background:transparent;padding:4px;color:var(--beige);font-size:18px;line-height:1}
+.fav[aria-pressed="true"]{color:var(--orange)}
+.empty{padding:40px 16px;text-align:center;color:var(--muted);font-size:14px}
+
+.mapwrap{min-width:0;position:relative;overflow:hidden;background:#EDE6D6;touch-action:none;cursor:grab}
+.mapwrap.dragging{cursor:grabbing}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;display:none}
+.stage.on{display:block}
+.stage img{display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.stage svg{position:absolute;left:0;top:0;overflow:visible}
+.hot{fill:transparent;cursor:pointer}
+.hot:hover{fill:rgba(224,96,58,.18);stroke:var(--orange);stroke-width:2.5}
+.zhit{fill:transparent;stroke:transparent;stroke-width:10;cursor:pointer;transition:fill .2s}
+.zhit{stroke-width:4}
+.zhit:hover{fill:rgba(255,255,255,.22);stroke:var(--ink);stroke-dasharray:12 8}
+.dim{fill:#F7F3E8;fill-opacity:.72;fill-rule:evenodd;pointer-events:none;transition:opacity .3s}
+.hit{fill:none;stroke:var(--orange);stroke-width:3.5}
+.favmark{fill:var(--orange);stroke:#fff;stroke-width:2}
+.sel1{fill:none;stroke:var(--orange);stroke-width:4}
+.sel2{fill:none;stroke:var(--orange);stroke-width:3;animation:pulse 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+.g-noev{pointer-events:none}
+.tools{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:8px;z-index:5}
+.tools button{width:42px;height:42px;border:2px solid var(--ink);border-radius:12px;background:#fff;font-size:20px;font-weight:700;box-shadow:var(--shadow);display:grid;place-items:center}
+.tools button:active{transform:translateY(2px);box-shadow:none}
+.mapbar{position:absolute;left:14px;top:14px;z-index:5;display:flex;align-items:center;gap:8px;max-width:calc(100% - 80px)}
+.mapback{display:none;align-items:center;gap:6px;border:2px solid var(--ink);background:var(--yellow);border-radius:999px;padding:5px 14px 5px 10px;font-size:14px;font-weight:900;box-shadow:var(--shadow);white-space:nowrap}
+.mapback.show{display:inline-flex}
+.mapback:active{transform:translateY(2px);box-shadow:none}
+.hint{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:4px 14px;font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+.tip{position:absolute;z-index:6;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;padding:4px 10px;border-radius:8px;white-space:nowrap;transform:translate(-50%,calc(-100% - 14px));display:none}
+
+.card{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:8;width:min(440px,calc(100% - 28px));background:#fff;border:2px solid var(--ink);border-radius:18px;box-shadow:0 4px 0 var(--ink);padding:16px 18px;display:none}
+.card.show{display:block;animation:up .22s ease-out}
+@keyframes up{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.card .row{display:flex;align-items:flex-start;gap:12px}
+.card .logo{flex:none;width:56px;height:56px;border-radius:14px;border:2px solid var(--ink);background:var(--paper2);display:grid;place-items:center;overflow:hidden;font-weight:900;font-size:20px}
+.card .logo img{width:100%;height:100%;object-fit:cover}
+.card h3{margin:0;font-size:18px;line-height:1.3}
+.card .sub{font-size:12.5px;color:var(--ink2);margin-top:2px}
+.card .desc{font-size:14px;color:var(--ink2);margin:10px 0 0}
+.card .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.card .links a,.card .links button{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:2px solid var(--ink);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;background:#fff}
+.card .links a:hover,.card .links button:hover{background:var(--yellow)}
+.card .x{position:absolute;right:10px;top:8px;border:0;background:transparent;font-size:22px;line-height:1;padding:4px;color:var(--muted)}
+.dates{display:flex;gap:6px;margin-top:10px}
+.dates span{font:700 12px "Space Grotesk",sans-serif;border:2px solid var(--beige);color:var(--beige);border-radius:999px;padding:1px 9px}
+.dates span.on{border-color:var(--ink);color:var(--ink);background:var(--yellow)}
+.share{margin-top:8px;font-size:12.5px;color:var(--ink2)}
+.share button{border:0;background:none;padding:0;color:var(--orange);font-weight:700;text-decoration:underline;font-size:12.5px}
+.days{display:flex;gap:6px;margin-top:10px;align-items:center;font-size:12.5px;color:var(--ink2)}
+.days button{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:2px 11px;font-size:12.5px;font-weight:700}
+.days button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.boothtag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;background:var(--ink);color:#fff;border-radius:999px;padding:2px 10px;margin-bottom:6px}
+.boothtag .sw{width:9px;height:9px;border-radius:50%;background:var(--zc)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:999px;font-size:13.5px;z-index:50;display:none}
+footer{padding:28px 20px 40px;text-align:center;color:var(--muted);font-size:12.5px;border-top:2px solid var(--ink)}
+footer b{color:var(--ink)}
+.foot-logo{display:inline-flex;align-items:center;gap:8px;font-size:20px;font-weight:900;letter-spacing:.1em;color:var(--ink);margin-bottom:8px}
+.where{margin-top:14px;font-size:13.5px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:6px 14px}
+.where a{color:var(--green);font-weight:700;text-decoration:none;border-bottom:1.5px solid currentColor}
+
+@media (max-width:900px){
+  .topbar{padding:8px 14px}.meta,.brand small{display:none}
+  .brand-logo{font-size:16px}
+  .jump{white-space:nowrap;padding:5px 12px;font-size:13px}
+  .tag{font-size:11px;padding:2px 8px}
+  .hero{grid-template-columns:1fr;gap:18px;padding:18px 16px 20px}
+  .kv{max-width:340px;margin:0 auto}
+  .fact b{font-size:18px}
+  .app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;height:auto;scroll-margin-top:50px}
+  .mapwrap{grid-row:1;height:auto;aspect-ratio:2576/1359;max-height:62vh;position:sticky;top:52px;z-index:10;border-bottom:2px solid var(--ink);background:#F3EEE3}
+  .mapbar{left:8px;top:8px;gap:6px}
+  .mapback{padding:3px 10px 3px 6px;font-size:12.5px}
+  .tools{right:8px;top:8px;gap:6px}
+  .tools button{width:34px;height:34px;border-radius:10px;font-size:17px}
+  .card{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;max-height:52vh;overflow:auto}
+  .panel{grid-row:2;border-right:0}
+  .list{overflow:visible}
+  .card{bottom:10px;padding:14px 16px}
+  .hint{font-size:11.5px;padding:2px 10px;background:rgba(255,255,255,.92)}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="brand-logo">2026 香菜市集</span> <small>在彰化</small> <span class="tag">CHANGHUA</span></div>
+  <div class="spacer"></div>
+  <div class="meta">11.28 – 11.29｜13:00 – 18:00｜員林圓林園滯洪池公園</div>
+  <button class="jump" id="jumpBtn">查看品牌地圖 ↓</button>
+</header>
+
+<section class="hero">
+  <img class="kv" src="kv.jpg" width="900" height="1125" alt="2026 香菜俱樂部 CORIANDER CLUB 主視覺｜11.28–11.29 13:00–18:00">
+  <div>
+    <h1><span class="nw">2026 香菜市集在彰化</span><br><span class="nw">品牌地圖</span></h1>
+    <p class="en">CORIANDER CLUB · BRAND MAP</p>
+    <p class="lead">2026 香菜市集從彰化出發，走過台北，再把今年最後一站帶回最熟悉的地方。一路從春天吃到秋天、從進香到回鑾，香菜加爆派與香菜退散派的對決也終於來到年度最終場，這次就用一場最完整、最熱鬧的香菜集合，為今年畫下句點。</p>
+    <p class="lead">11.28 — 11.29，香菜市集年度壓軸回到彰化員林，集結全台近 140 間風格品牌，從香菜料理、甜點、飲品到各種意想不到的創意企劃一次集合。錯過前面的，這次一起補進香；已經參戰過的，也歡迎最後再來加爆一次。2026 年度最後進香機會，彰化集合。</p>
+    <div class="facts">
+      <div class="fact"><b class="num">11.28–29</b><span>週六至週日 13:00–18:00</span></div>
+      <div class="fact"><b class="num" id="factBooths">130+</b><span>參展品牌</span></div>
+      <div class="fact"><b class="num">A–C</b><span>三大分區</span></div>
+    </div>
+    <div class="where"><span>📍 彰化縣員林市員林大道四段 369 號</span><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%BD%B0%E5%8C%96%E7%B8%A3%E5%93%A1%E6%9E%97%E5%B8%82%E5%93%A1%E6%9E%97%E5%A4%A7%E9%81%93%E5%9B%9B%E6%AE%B5369%E8%99%9F" target="_blank" rel="noopener">Google 地圖 ↗</a><a href="https://www.instagram.com/coriander_club/" target="_blank" rel="noopener">香菜市集 Instagram ↗</a></div>
+    <div class="how"><span><i>1</i>選擇分區</span><span><i>2</i>點選攤位看品牌與社群</span><span><i>3</i>★ 收藏成逛市集清單</span></div>
+  </div>
+</section>
+
+<main class="app" id="app">
+  <aside class="panel">
+    <div class="panel-head">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="q" type="text" enterkeyhint="search" placeholder="搜尋品牌、類別、城市或攤位編號（如 A12）" autocomplete="off" aria-label="搜尋品牌或攤位">
+        <button class="clear" id="clearQ" aria-label="清除搜尋">×</button>
+      </label>
+      <div class="days" id="days" role="group" aria-label="參加日期篩選"><span>日期</span>
+        <button data-day="0" aria-pressed="true">全部</button><button data-day="28" aria-pressed="false">11/28 六</button><button data-day="29" aria-pressed="false">11/29 日</button></div>
+      <div class="crumb">
+        <button class="back" id="back">← 全部分區</button>
+        <div class="title" id="ctitle"></div>
+        <div class="sub" id="csub"></div>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </aside>
+
+  <section class="mapwrap" id="mapwrap" aria-label="市集配置圖">
+    <div id="stages"></div>
+    <div class="mapbar"><button class="mapback" id="mapBack" aria-label="回上一頁地圖"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span id="mapBackTxt">上一頁</span></button><div class="hint" id="hint">點選分區查看攤位</div></div>
+    <div class="tools">
+      <button id="zin" aria-label="放大">＋</button>
+      <button id="zout" aria-label="縮小">－</button>
+      <button id="zfit" aria-label="回到全區" title="回到全區"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+    <div class="tip" id="tip"></div>
+    <div class="card" id="card" role="dialog" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  <span class="foot-logo">2026 香菜市集</span><br>
+  2026 香菜市集在彰化｜員林圓林園滯洪池公園<br>彰化縣員林市員林大道四段 369 號｜<a href="https://www.instagram.com/coriander_club/" target="_blank" rel="noopener">Instagram @coriander_club</a>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   參展品牌資料：之後只要在這裡填入即可
+   booth   ：攤位編號，如 "A01"、"B12"、"C05"；一個品牌占多個攤位可寫 ["A01","A02"]
+   name    ：品牌名稱（必填）   category：報名類別（原創餐飲、設計手作、美式餐車）
+   origin  ：所在城市
+   days    ：參加日期 [28,29]（同一攤位不同日期由不同品牌使用時，各自填寫）
+   ig / ig2 / fb / web：社群連結   desc：一句話介紹（選填）
+   logo    ：品牌圖片網址或 data URI（選填）
+   ===================================================================== */
+const BRANDS = [
+  {"booth": "C01", "name": "LAMNUA荏懶塔可", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/lamnua_taco"},
+  {"booth": "C02", "name": "超好吃豬肋排", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/pork_riblicious"},
+  {"booth": "C03", "name": "FASTARIAN 雨 林 蔬食料理", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "新竹市", "ig": "https://www.instagram.com/free_chef_kim"},
+  {"booth": "C04", "name": "港式老外茶餐", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "臺中市", "ig": "https://www.instagram.com/laowai1009"},
+  {"booth": "C05", "name": "逐日號甜物所", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/the.sunward"},
+  {"booth": "C06", "name": "禾咖哩", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "彰化員林", "ig": "https://www.instagram.com/he_curry88"},
+  {"booth": "C07", "name": "百年仙草", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "彰化員林", "fb": "https://www.facebook.com/yuanlinfood.tw/"},
+  {"booth": "C08", "name": "五號呆墨西哥捲餅", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/five_dump5511"},
+  {"booth": "C09", "name": "又好吃沙威瑪", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/yogoodeat_2022"},
+  {"booth": "C10", "name": "Vutjulj食者", "category": "美式餐車", "type": "餐飲", "days": [28, 29], "origin": "屏東", "fb": "https://www.facebook.com/Vutjulj-"},
+  {"booth": "A01", "name": "大鬍子小光頭 私廚料理", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/beard_baldhead"},
+  {"booth": "A02", "name": "比立福牛排", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "桃園", "ig": "https://www.instagram.com/beliefmeat"},
+  {"booth": "A03", "name": "四季蜂收", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/natural_flavor_seeker"},
+  {"booth": "A04", "name": "吃草的妞", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "花蓮", "ig": "https://www.instagram.com/sunnu193"},
+  {"booth": "A05", "name": "兔子高帽雞蛋焼き", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/bunnyhat.egg"},
+  {"booth": "A06", "name": "春日糖餅", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台北市", "ig": "https://www.instagram.com/chun_ri_hotteok"},
+  {"booth": "A07", "name": "極-KIWAMI-屋台", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/kiwami.taichung"},
+  {"booth": "A08", "name": "福仙丸", "category": "原創餐飲", "type": "餐飲", "days": [29], "origin": "台中", "ig": "https://www.instagram.com/fairy___kitchen"},
+  {"booth": "A08", "name": "LuxBee", "category": "原創餐飲", "type": "餐飲", "days": [28], "origin": "台南", "desc": "蜂蜜檸檬、限定水果特調、限定梅酒特調、氣泡特調、蜂蜜紅茶、蜂蜜紅拿鐵、蜂巢蜜、限定泰式特調、限定風味餐包、蜂蜜蠟皂等蜂蜜相關產品", "ig": "https://www.instagram.com/luxbee66"},
+  {"booth": "A09", "name": "CRAZI GELATO", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/crazigelato"},
+  {"booth": "A10", "name": "卡厝味", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/cacakuche"},
+  {"booth": "A11", "name": "食間韓式飯捲", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "員林", "fb": "https://www.facebook.com/share/19Ns9aUbFs/"},
+  {"booth": "A12", "name": "Green薄荷屋", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "雲林", "web": "https://share.google/FZ7HcyH67Qzwcp3X2"},
+  {"booth": "A13", "name": "HolyHome 厚禮家鄉村麵包", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "屏東", "fb": "https://www.facebook.com/holyhometw/"},
+  {"booth": "A14", "name": "Lazy Röro Crepes法式可麗餅", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台北市", "ig": "https://www.instagram.com/lazyrorocrepes"},
+  {"booth": "A15", "name": "MUUDY 茶飲調酒專賣", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "桃園", "ig": "https://www.instagram.com/muudy_drink2020"},
+  {"booth": "A16", "name": "莃日", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/shishi.days_coffee"},
+  {"booth": "A17", "name": "哦歐 oou o!cake", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "員林市", "ig": "https://www.instagram.com/oouo.cake"},
+  {"booth": "A18", "name": "捲の熊烘焙屋", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/bingobagel222"},
+  {"booth": "A19", "name": "之曦手作 /Macrame+Design", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化市", "fb": "https://www.facebook.com/profile.php?id=100083370669152", "ig": "https://www.instagram.com/c_sunshine2022.tw"},
+  {"booth": "A20", "name": "旎泥nispottery", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化鹿港", "ig": "https://www.instagram.com/nispottery"},
+  {"booth": "A21", "name": "壹弍文創", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/vintagestyle1212"},
+  {"booth": "A22", "name": "NALIO", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/nalioscent"},
+  {"booth": "A23", "name": "NISSHO STUDIO", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/nissho.studio"},
+  {"booth": "A24", "name": "OKAERI", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/okaeri.2023"},
+  {"booth": "A25", "name": "MIHER茉荷", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/mihercare"},
+  {"booth": "A26", "name": "J.I.U", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南市", "ig": "https://www.instagram.com/j.i.u_select"},
+  {"booth": "A27", "name": "L．慢手作", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化縣埔心鄉", "ig": "https://www.instagram.com/yuchuan.illustration.craftwork"},
+  {"booth": "A28", "name": "LUCE｜手作·由廢棄物而生", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/luce_250821"},
+  {"booth": "A29", "name": "Moreisless日系棉麻服飾", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/moreisless2023"},
+  {"booth": "A30", "name": "R.F.H居無定所", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "苗栗縣", "ig": "https://www.instagram.com/rita.focus.handmade"},
+  {"booth": "A31", "name": "y-axis", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/p/DAvE5-NzCDE"},
+  {"booth": "A32", "name": "HOOKIN設計", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/hookin.design"},
+  {"booth": "A33", "name": "Holi Rise | 禾里兆嶼", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/holirise_lab713"},
+  {"booth": "A34", "name": "DAPB可愛手工軟陶小物", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "新北市", "ig": "https://www.instagram.com/dapb_cute_clay"},
+  {"booth": "A35", "name": "恬日 tan.nichi", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台北", "ig": "https://www.instagram.com/tan.nichi"},
+  {"booth": "A36", "name": "隨癒生活 The Flow & Heal life", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/theflowheal_life"},
+  {"booth": "A37", "name": "麋鹿斑斑", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/wapiti.earring"},
+  {"booth": "A38", "name": "雙木的植栽", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/handmade_plant"},
+  {"booth": "A39", "name": "Cherry｜埕裡捻飾", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化市", "ig": "https://www.instagram.com/cherry_hand.made"},
+  {"booth": "A40", "name": "𝓑𝓸𝓷𝓲𝓽𝓪 𝓢𝓽𝓾𝓭𝓲𝓸", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/bonitastudio1994"},
+  {"booth": "A41", "name": "witharch阿秋", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/witharch.tw"},
+  {"booth": "A42", "name": "SOLA獨處", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義", "ig": "https://www.instagram.com/solajewelry_"},
+  {"booth": "A43", "name": "Su Natural", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/su__natural"},
+  {"booth": "A44", "name": "YULIN", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化市", "ig": "https://www.instagram.com/yulin.crochet"},
+  {"booth": "A45", "name": "MA_10", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "fb": "https://www.facebook.com/ma10ma10ma/"},
+  {"booth": "A46", "name": "prockr x jouer職人背帶", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "fb": "https://www.facebook.com/prockrdesign"},
+  {"booth": "A47", "name": "isMouton jewelry", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/is_mouton"},
+  {"booth": "A48", "name": "Me角手作寵物零食", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/mega_dogcat"},
+  {"booth": "A49", "name": "Me角寵物用的小店", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/mega_dogcat_petscarf2.0"},
+  {"booth": "A50", "name": "First Sight初見寵物", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南市", "ig": "https://www.instagram.com/firstsight1102"},
+  {"booth": "A51", "name": "澄物作室 still objects", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南市", "ig": "https://www.instagram.com/still_objects_official"},
+  {"booth": "A52", "name": "CERES Parfums", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/ceres_parfum"},
+  {"booth": "A53", "name": "嚕阿嚕阿嚕", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/lu.lu.tw"},
+  {"booth": "A54", "name": "Doubletree", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/doubletree_lin"},
+  {"booth": "A55", "name": "蝴蝶潔手作", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/jiema_s_handmade"},
+  {"booth": "A56", "name": "捏東捏西手創黏土", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄市", "ig": "https://www.instagram.com/nacinado"},
+  {"booth": "A57", "name": "珂蘿花設計kielo floral design", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "新北市", "ig": "https://www.instagram.com/kl_fflower"},
+  {"booth": "A58", "name": "喃喃自語Nannan.ing", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南市", "ig": "https://www.instagram.com/nannan.ing"},
+  {"booth": "A59", "name": "Gogosister accessories", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/gogosister2017"},
+  {"booth": "A60", "name": "HiGh MaLi", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台北市", "ig": "https://www.instagram.com/high.mali"},
+  {"booth": "A61", "name": "愛浪客｜毛孩良食｜販亮店", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "屏東", "ig": "https://www.instagram.com/goper8763"},
+  {"booth": "B01", "name": "大苑子", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化縣大村鄉", "web": "https://maps.app.goo.gl/i1HsyGxej83G9hMP9?g_st=il"},
+  {"booth": "B02", "name": "NO.162", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "新營", "fb": "https://www.facebook.com/profile.php?id=100063488036630"},
+  {"booth": "B03", "name": "Rinskings芸蒔刻 鮮果製茶所", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/rinskings_fruittea"},
+  {"booth": "B04", "name": "鄰人咖啡 Neighboring kaffa", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/neighboring_kaffa"},
+  {"booth": "B05", "name": "DODO U", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化市", "ig": "https://www.instagram.com/_dodo_u"},
+  {"booth": "B06", "name": "尖頭油飯", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/jiantou_"},
+  {"booth": "B07", "name": "秋菓草莓大福", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/qiu_guo11"},
+  {"booth": "B08", "name": "芮嶼布丁專売", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/ruiyu_dessert"},
+  {"booth": "B09", "name": "越春", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/hongee_woo__"},
+  {"booth": "B10", "name": "頑固油飯", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/onegu.2019"},
+  {"booth": "B11", "name": "1:1供物所 x 手感絹印", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/hi.miumiu"},
+  {"booth": "B12", "name": "時羽 Time for yu", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/time_for_yu"},
+  {"booth": "B13", "name": "旅。交易所 Travel & Trade", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/travel_trade2"},
+  {"booth": "B14", "name": "津Handmade", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "員林", "ig": "https://www.instagram.com/cami_jej"},
+  {"booth": "B15", "name": "哈維思特", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/harvest.acc.dsgn"},
+  {"booth": "B16", "name": "阿發的阿公是木匠", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義", "ig": "https://www.instagram.com/woodcraftfafa"},
+  {"booth": "B17", "name": "16%VoL.微醺飾品", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/studio16vol"},
+  {"booth": "B18", "name": "沒有文青", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "彰化", "fb": "https://www.facebook.com/Ruzheness.Wang", "ig": "https://www.instagram.com/mayyou_studio"},
+  {"booth": "B19", "name": "沐沐珍栽", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "高雄市", "ig": "https://www.instagram.com/mumujen_planting"},
+  {"booth": "B20", "name": "江鳥九日", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/9days_studio"},
+  {"booth": "B21", "name": "加一點老派", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/olddays.eec"},
+  {"booth": "B22", "name": "7days手作飾品", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/7days_handmade"},
+  {"booth": "B23", "name": "新妡珠寶｜天然礦石輕珠寶", "category": "設計手作", "type": "設計", "days": [29], "origin": "台南市", "fb": "https://www.facebook.com/newhsinjewelry", "ig": "https://www.instagram.com/newhsin_com"},
+  {"booth": "B24", "name": "8Studio X 三日森", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台中北屯", "ig": "https://www.instagram.com/8studio.sanrisen"},
+  {"booth": "B25", "name": "W2 織物所", "category": "設計手作", "type": "設計", "days": [28], "origin": "新北市", "ig": "https://www.instagram.com/w2.crochet"},
+  {"booth": "B25", "name": "金陶囍 Gentle Smithing", "category": "設計手作", "type": "設計", "days": [29], "origin": "台中市", "fb": "https://www.facebook.com/gentle.smithing", "ig": "https://www.instagram.com/gentle.smithing"},
+  {"booth": "B26", "name": "叁拾而立", "category": "原創餐飲", "type": "餐飲", "days": [29], "origin": "台中", "ig": "https://www.instagram.com/30years.erli"},
+  {"booth": "B26", "name": "ErNi", "category": "設計手作", "type": "設計", "days": [28], "origin": "台中", "ig": "https://www.instagram.com/erni_petite"},
+  {"booth": "B27", "name": "亭一下買包子饅頭", "category": "原創餐飲", "type": "餐飲", "days": [29], "origin": "彰化鹿港", "web": "https://reurl.cc/4yjejj"},
+  {"booth": "B27", "name": "Laurel Craft", "category": "設計手作", "type": "設計", "days": [28], "origin": "高雄", "ig": "https://www.instagram.com/laurelcraft12"},
+  {"booth": "B28", "name": "TOODO來一捲", "category": "原創餐飲", "type": "餐飲", "days": [29], "origin": "台中", "ig": "https://www.instagram.com/p/DO52pi4ga1c"},
+  {"booth": "B28", "name": "New Hsin Jewelry | 新妡珠寶💎", "category": "設計手作", "type": "設計", "days": [28], "origin": "台南市", "fb": "https://www.facebook.com/newhsinjewelry", "ig": "https://www.instagram.com/newhsin_com"},
+  {"booth": "B29", "name": "三毛與小白", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "台北", "ig": "https://www.instagram.com/evelynn_stone1116"},
+  {"booth": "B30", "name": "老娜與香 Siang", "category": "設計手作", "type": "設計", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/and_siang"},
+  {"booth": "B31", "name": "隅生方塊燒", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/yusheng_2021"},
+  {"booth": "B32", "name": "蔓烤Vine Roast", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市西屯區", "ig": "https://www.instagram.com/vine.roast"},
+  {"booth": "B33", "name": "H&H現炸吉拿棒", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/h.h_churros"},
+  {"booth": "B34", "name": "露ㄅ一章魚燒", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化市", "fb": "https://www.facebook.com/share/1AJZQJa8YT/"},
+  {"booth": "B35", "name": "BB貓甜點：布朗尼＆軟餅乾", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/bb.cat_dessert"},
+  {"booth": "B36", "name": "kadoya喫茶店", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南市", "ig": "https://www.instagram.com/kadoya.tw"},
+  {"booth": "B37", "name": "山嶼鹿 deer mountains", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "南投", "ig": "https://www.instagram.com/deermountains"},
+  {"booth": "B38", "name": "日々甜點工作室", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/daily__hibi"},
+  {"booth": "B39", "name": "希望麥子手作烘焙坊", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/grainsofhope_bakery"},
+  {"booth": "B40", "name": "A. cake", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "臺中", "ig": "https://www.instagram.com/acake999"},
+  {"booth": "B41", "name": "Dulce Vida 甜點甜", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中", "ig": "https://www.instagram.com/dulcevidadessert"},
+  {"booth": "B42", "name": "小土的手作烘焙", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/turkish_sweet_home"},
+  {"booth": "B43", "name": "羊卷子チュロス｜吉拿棒専売所", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中烏日", "ig": "https://www.instagram.com/churrosheep_"},
+  {"booth": "B44", "name": "村花家", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/cv.toudao"},
+  {"booth": "B45", "name": "邱哥印度脆球", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/qiu_crispy_ball"},
+  {"booth": "B46", "name": "阿爆 爆爆雞-白羽", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "嘉義", "fb": "https://www.facebook.com/share/14UTncns1DG/"},
+  {"booth": "B47", "name": "覓蒔ダックワーズ売店", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/seekseektw"},
+  {"booth": "B48", "name": "愛柒Aichi嘉義店", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "嘉義", "ig": "https://www.instagram.com/aichii7_chiayi"},
+  {"booth": "B49", "name": "樂不亭拔絲地瓜", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/lebutei_sweetpotatoes"},
+  {"booth": "B50", "name": "戎舘", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南", "fb": "https://www.facebook.com/YebisuKan1935"},
+  {"booth": "B51", "name": "印度寶來屋餐廳", "category": "原創餐飲", "type": "餐飲", "days": [29], "origin": "台中"},
+  {"booth": "B51", "name": "喫甜。", "category": "原創餐飲", "type": "餐飲", "days": [28], "origin": "台中市", "ig": "https://www.instagram.com/eat_sweet1024"},
+  {"booth": "B52", "name": "喬西肉舖", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化市", "ig": "https://www.instagram.com/juicymeat2021"},
+  {"booth": "B53", "name": "SNOW 雪諾義式冰淇淋", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台南", "ig": "https://www.instagram.com/snow.gelato"},
+  {"booth": "B54", "name": "勝好貝果專門店", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台中市", "ig": "https://www.instagram.com/good_baked"},
+  {"booth": "B55", "name": "露嗑迷甜點工作室", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "嘉義市", "ig": "https://www.instagram.com/lookta_me57"},
+  {"booth": "B56", "name": "Phase Coffee Roasters", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "臺中市", "ig": "https://www.instagram.com/phase_coffee_roasters"},
+  {"booth": "B57", "name": "Eagle Valley Cafe 老鷹咖啡", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化員林", "ig": "https://www.instagram.com/p/Dd5SMv8lIy5"},
+  {"booth": "B58", "name": "囍臨咖啡", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/healinghouse_coffee_roaster"},
+  {"booth": "B59", "name": "KOKO STUDIO", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "台北市", "ig": "https://www.instagram.com/koko.studio_official"},
+  {"booth": "B60", "name": "米弎豆お菓子処", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "彰化", "ig": "https://www.instagram.com/misato.machitea"},
+  {"booth": "B61", "name": "共生咖啡", "category": "原創餐飲", "type": "餐飲", "days": [28, 29], "origin": "高雄", "ig": "https://www.instagram.com/symbiosis_cafe"}
+];
+
+/* 配置圖：pos 為攤位編號在圖上的位置（像素座標） */
+const MAPS = {"ov":{"w":2576,"h":1359,"zones":{"A":[812,205,1570,662],"B":[1640,205,2378,895],"C":[852,655,1912,1000]},"pos":{"A48":[895,234],"A49":[944,234],"A50":[994,234],"A51":[1044,233],"A52":[1094,234],"A53":[1145,234],"A54":[1194,234],"A55":[1244,233],"A56":[1293,234],"A57":[1343,234],"A58":[1392,234],"A59":[1442,234],"A60":[1491,234],"A61":[1541,234],"A47":[842,283],"A46":[842,332],"A45":[842,382],"A44":[842,431],"A43":[842,480],"A42":[842,530],"A41":[842,579],"A21":[994,386],"A20":[994,436],"A19":[995,485],"A24":[1044,386],"A23":[1044,436],"A22":[1043,485],"A30":[1143,386],"A31":[1192,386],"A32":[1242,386],"A33":[1292,386],"A34":[1341,386],"A25":[1143,435],"A26":[1192,435],"A27":[1242,435],"A28":[1292,435],"A29":[1341,436],"A37":[1440,337],"A36":[1440,386],"A35":[1440,436],"A40":[1489,338],"A39":[1489,386],"A38":[1489,436],"A18":[996,585],"A17":[1045,585],"A16":[1093,585],"A09":[995,634],"A08":[1045,634],"A07":[1094,634],"A15":[1193,585],"A14":[1242,585],"A13":[1292,585],"A12":[1341,585],"A06":[1193,634],"A05":[1242,634],"A04":[1292,634],"A03":[1341,634],"A11":[1440,585],"A10":[1490,585],"A02":[1440,634],"A01":[1489,634],"B23":[1690,234],"B22":[1739,234],"B21":[1789,234],"B20":[1838,234],"B19":[1888,233],"B18":[1937,234],"B17":[1987,234],"B16":[2036,234],"B15":[2086,234],"B14":[2135,234],"B13":[2185,234],"B12":[2235,234],"B11":[2285,234],"B01":[2339,322],"B02":[2319,367],"B03":[2299,412],"B04":[2279,458],"B05":[2259,503],"B06":[2178,684],"B07":[2158,729],"B08":[2138,774],"B09":[2118,818],"B10":[2097,863],"B24":[1899,347],"B25":[1944,367],"B29":[1879,392],"B30":[1924,412],"B26":[2031,405],"B27":[2076,425],"B28":[2122,445],"B31":[2011,450],"B32":[2056,470],"B33":[2102,490],"B34":[1705,420],"B35":[1750,440],"B36":[1795,460],"B37":[1841,480],"B38":[1885,500],"B42":[1684,465],"B43":[1729,485],"B44":[1774,505],"B45":[1820,525],"B46":[1865,545],"B39":[1972,538],"B40":[2017,558],"B41":[2062,578],"B47":[1952,583],"B48":[1997,603],"B49":[2042,623],"B50":[1668,622],"B51":[1713,642],"B52":[1758,662],"B53":[1803,682],"B56":[1647,666],"B57":[1692,686],"B58":[1737,706],"B59":[1782,726],"B54":[1893,722],"B55":[1938,742],"B60":[1872,767],"B61":[1918,787],"C10":[904,707],"C09":[1021,775],"C08":[1135,775],"C07":[1250,774],"C06":[1364,774],"C05":[1445,864],"C04":[1521,967],"C03":[1634,968],"C02":[1747,970],"C01":[1860,971]}}};
+MAPS.ov.src = "map.jpg";
+
+const ZONES = [
+  {k:"A", name:"A區", type:"原創餐飲・設計手作", c:"#F2D04B", fill:"#F3E3A0", map:"ov"},
+  {k:"B", name:"B區", type:"原創餐飲・設計手作", c:"#6FA8DC", fill:"#C9DDF0", map:"ov"},
+  {k:"C", name:"C區", type:"美式餐車", c:"#9B8CF2", fill:"#D8D1F7", map:"ov"},
+];
+const FACILITIES = [
+  {id:"desk",  name:"活動服務台", s:"服務台", pts:[[1975,785]]},
+  {id:"wc",    name:"公共廁所",   s:"廁所",   pts:[[440,1180]]},
+  {id:"rest",  name:"休息區",     s:"休息區", pts:[[1605,327],[1580,518],[1560,755]]},
+  {id:"trash", name:"垃圾集中帳", s:"垃圾帳", pts:[[1140,1022]]},
+  {id:"gate",  name:"入口",       s:"入口",   pts:[[2280,628],[2000,943]]},
+  {id:"load",  name:"卸貨出入口", s:"卸貨口", pts:[[340,178]]},
+];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){ const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+const zoneOf = id => id[0];
+const zoneObj = k => ZONES.find(z => z.k === k);
+const label = id => id;
+const normBooth = s => String(s).trim().toUpperCase().replace(/\s+/g,"").replace(/^([A-C])(\d)$/,"$10$2");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl = u => /^https?:\/\//i.test(u||"") ? u : "";
+const store = { get(k,d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} } };
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.style.display="block"; clearTimeout(toast._t); toast._t=setTimeout(()=>t.style.display="none",1800); }
+const eSub = id => zoneObj(zoneOf(id)).type;
+const isMobile = () => matchMedia("(max-width:900px)").matches;
+
+/* ---------- entries ---------- */
+const ALL = Object.keys(MAPS.ov.pos);
+/* 攤位備註：品牌臨時取消等，填 攤位編號: "說明" */
+const BOOTH_NOTES = {};
+const brandByBooth = {}, entries = [];
+const DAYS = [28,29];
+BRANDS.forEach((b,i) => {
+  const booths = (Array.isArray(b.booth) ? b.booth : String(b.booth).split(/[,，、]/)).map(normBooth).filter(id => MAPS.ov.pos[id]);
+  if (!booths.length || !b.name) return;
+  if (!b.days || !b.days.length) b.days = DAYS.slice();
+  const e = {key:"b"+i, brand:b, booths, zone:zoneOf(booths[0])};
+  booths.forEach(id => (brandByBooth[id] = brandByBooth[id] || []).push(e)); entries.push(e);
+});
+Object.values(brandByBooth).forEach(a => a.sort((x,y) => x.brand.days[0] - y.brand.days[0]));
+let dayFilter = 0;
+const onDay = e => !dayFilter || !e.brand || e.brand.days.includes(dayFilter);
+const pickBrand = id => { const a = brandByBooth[id]; if (!a) return null; return a.find(onDay) || a[0]; };
+const dayText = d => (d.length === DAYS.length ? "11/28–29 兩天" : d.map(x => "11/" + x).join("、"));
+const sameBooth = e => e.brand ? [...new Set(e.booths.flatMap(id => brandByBooth[id] || []))].filter(x => x !== e) : [];
+const order = ["A","B","C"];
+const sortKey = id => order.indexOf(zoneOf(id)) * 1000 + parseInt(id.replace(/\D/g,""),10);
+const eKey = e => sortKey(e.booths[0]) + (e.brand ? e.brand.days[0] / 100 : 0);
+ALL.forEach(id => { if (!brandByBooth[id]) entries.push({key:id, brand:null, booths:[id], zone:zoneOf(id)}); });
+entries.sort((a,b) => eKey(a) - eKey(b));
+$("#factBooths").textContent = entries.filter(e => e.brand).length;
+const countZone = k => ALL.filter(id => zoneOf(id) === k).length;
+
+/* ---------- build stages ---------- */
+const STAGE = {};
+Object.entries(MAPS).forEach(([key, m]) => {
+  const st = document.createElement("div"); st.className = "stage"; st.dataset.map = key;
+  st.innerHTML = `<img src="${m.src}" width="${m.w}" height="${m.h}" alt="香菜市集 全區配置圖">`;
+  const svg = el("svg",{viewBox:`0 0 ${m.w} ${m.h}`,width:m.w,height:m.h}); st.appendChild(svg);
+  const g = {};
+  ["dim","hot","zone","fav","hit","sel"].forEach(n => g[n] = el("g",{class:(n==="hot"||n==="zone")?"":"g-noev"},svg));
+  const R = 24;
+  Object.entries(m.pos).forEach(([id,[x,y]]) => {
+    const c = id.startsWith("CB") ? el("rect",{x:x-(key==="ov"?14:22),y:y-(key==="ov"?16:24),width:key==="ov"?28:44,height:key==="ov"?42:64,rx:12,class:"hot"},g.hot) : el("circle",{cx:x,cy:y,r:R,class:"hot"},g.hot);
+    c.dataset.id = id;
+  });
+  if (key === "ov") ["A","B","C"].forEach(k => {
+    const [x0,y0,x1,y1] = m.zones[k];
+    const r = el("rect",{x:x0,y:y0,width:x1-x0,height:y1-y0,rx:28,class:"zhit"},g.zone); r.dataset.zone = k;
+  });
+  $("#stages").appendChild(st);
+  STAGE[key] = {el:st, svg, g, m, R};
+});
+
+/* ---------- view state per stage ---------- */
+const wrap = $("#mapwrap");
+let cur = "ov";
+const view = {x:0, y:0, s:0.1};
+const fitScale = (w,h) => Math.min(wrap.clientWidth / w, wrap.clientHeight / h);
+function minS(){ const m = STAGE[cur].m; return fitScale(m.w, m.h) * 0.9; }
+function clamp(){
+  const m = STAGE[cur].m;
+  view.s = Math.min(3, Math.max(minS(), view.s));
+  const vw = wrap.clientWidth, vh = wrap.clientHeight, W = m.w*view.s, H = m.h*view.s;
+  view.x = W < vw ? (vw - W)/2 : Math.min(60, Math.max(vw - W - 60, view.x));
+  view.y = H < vh ? (vh - H)/2 : Math.min(60, Math.max(vh - H - 60, view.y));
+}
+function apply(){ clamp(); STAGE[cur].el.style.transform = `translate(${view.x}px,${view.y}px) scale(${view.s})`; }
+function zoomAt(px, py, f){
+  const s2 = Math.min(3, Math.max(minS(), view.s * f)), k = s2 / view.s;
+  view.x = px - (px - view.x)*k; view.y = py - (py - view.y)*k; view.s = s2; apply();
+}
+let anim;
+function animateTo(tx, ty, ts, instant){
+  cancelAnimationFrame(anim);
+  if (instant){ view.x = tx; view.y = ty; view.s = ts; apply(); return; }
+  const sx = view.x, sy = view.y, ss = view.s, t0 = performance.now(), D = 520;
+  const step = now => { const t = Math.min(1, (now - t0)/D), e = 1 - Math.pow(1-t, 3);
+    view.s = ss + (ts-ss)*e; view.x = sx + (tx-sx)*e; view.y = sy + (ty-sy)*e; apply(); if (t < 1) anim = requestAnimationFrame(step); };
+  anim = requestAnimationFrame(step);
+}
+function cardH(){ if (isMobile()) return 0; return $("#card").classList.contains("show") ? $("#card").offsetHeight + 20 : 0; }
+function fitBox([x0,y0,x1,y1], pad, instant, minScale){
+  const w = x1-x0+pad*2, h = y1-y0+pad*2;
+  const s = Math.min(1.4, Math.max(minScale || 0, fitScale(w, h)));
+  animateTo(wrap.clientWidth/2 - (x0+x1)/2*s, wrap.clientHeight/2 - (y0+y1)/2*s, s, instant);
+}
+function fitAll(instant){ const m = STAGE[cur].m; const s = fitScale(m.w, m.h)*(isMobile() ? 1 : 0.98); animateTo((wrap.clientWidth - m.w*s)/2, (wrap.clientHeight - m.h*s)/2, s, instant); }
+function flyToPts(pts, s){
+  const xs = pts.map(p=>p[0]), ys = pts.map(p=>p[1]);
+  const cx = (Math.min(...xs)+Math.max(...xs))/2, cy = (Math.min(...ys)+Math.max(...ys))/2;
+  animateTo(wrap.clientWidth/2 - cx*s, (wrap.clientHeight - cardH())/2 - cy*s, s);
+}
+function showStage(key){
+  if (cur === key) return;
+  STAGE[cur].el.classList.remove("on"); cur = key; STAGE[cur].el.classList.add("on");
+  drawFavs();
+}
+
+/* ---------- app state ---------- */
+let mode = "overview", curZone = null, query = "", selected = null;
+let favs = new Set(store.get("coriander2026ch-favs", []));
+const mapOfZone = k => zoneObj(k).map;
+
+function setDim(){
+  Object.values(STAGE).forEach(S => S.g.dim.innerHTML = "");
+  if (mode !== "detail" || !curZone || !ZONES.some(z => z.k === curZone)) return;
+  const S = STAGE[mapOfZone(curZone)], [x0,y0,x1,y1] = S.m.zones[curZone], p = 14, r = 34;
+  const {w,h} = S.m;
+  const hole = `M${x0-p+r},${y0-p} H${x1+p-r} A${r},${r} 0 0 1 ${x1+p},${y0-p+r} V${y1+p-r} A${r},${r} 0 0 1 ${x1+p-r},${y1+p} H${x0-p+r} A${r},${r} 0 0 1 ${x0-p},${y1+p-r} V${y0-p+r} A${r},${r} 0 0 1 ${x0-p+r},${y0-p} Z`;
+  el("path",{d:`M0,0 H${w} V${h} H0 Z ${hole}`,class:"dim"},S.g.dim);
+}
+
+/* ---------- panel ---------- */
+function setCrumb(){
+  const back = $("#back"), t = $("#ctitle"), s = $("#csub");
+  if (query){ back.style.display = "none"; t.textContent = "搜尋結果"; s.textContent = ""; return; }
+  if (mode === "overview"){ back.style.display = "none"; t.textContent = "選擇分區"; s.textContent = `${ALL.length} 個攤位`; return; }
+  back.style.display = "inline-block";
+  if (curZone === "FAC"){ t.textContent = "服務設施"; s.textContent = ""; return; }
+  if (curZone === "FAV"){ t.textContent = "★ 我的逛市集清單"; s.textContent = favs.size + " 個收藏"; return; }
+  const z = zoneObj(curZone);
+  t.innerHTML = `<span class="sw" style="background:${z.c}">${z.k==="CB"?"":z.k}</span>${z.name}`; s.textContent = z.type;
+}
+function renderPanel(){
+  setCrumb();
+  const list = $("#list");
+  if (query) return renderRows(entries.filter(matches), true);
+  if (mode === "overview"){
+    const named = k => entries.filter(e => e.zone === k && e.brand).length;
+    list.innerHTML = ZONES.map(z => `<button class="zcard" data-zone="${z.k}">
+        <span class="letter ${z.k==="CB"?"txt":"num"}" style="background:${z.c}">${z.k==="CB"?"小木屋":z.k}</span>
+        <span><b>${z.name}　<small style="font-weight:500;color:var(--ink2)">${z.type}</small></b><span>${countZone(z.k)} 個攤位${named(z.k)?`・已公布 ${named(z.k)} 個品牌`:""}</span></span>
+        <span class="go">→</span></button>`).join("")
+      + `<button class="zcard" data-zone="FAC"><span class="letter txt" style="background:#fff">設施</span><span><b>服務設施</b><span>服務台・廁所・休息區・入口</span></span><span class="go">→</span></button>`
+      + `<button class="zcard" data-zone="FAV"><span class="letter" style="background:#fff;color:var(--orange);font-size:26px">★</span><span><b>我的逛市集清單</b><span>${favs.size ? favs.size+" 個收藏" : "點選攤位旁的 ★ 加入"}</span></span><span class="go">→</span></button>`
+      + `<p class="note">部分攤位依日期由不同品牌使用，可用上方日期篩選查看當日品牌。<br>配置圖為示意，實際攤位以現場為準。</p>`;
+    return;
+  }
+  if (curZone === "FAC"){
+    list.innerHTML = FACILITIES.map(f => `<div class="item" role="button" tabindex="0" data-fac="${f.id}">
+      <span class="badge" style="--zc:#fff;font-weight:700">${f.s}</span>
+      <span class="t"><b>${f.name}</b><span>${f.pts.length>1 ? f.pts.length+" 處・點選查看位置" : "點選查看位置"}</span></span></div>`).join("")
+      + `<p class="note">臨近道路：員林大道四段・橋愛街・大勇街<br>公共廁所位於園區西南側（員林大道四段旁）</p>`;
+    return;
+  }
+  if (curZone === "FAV") return renderRows(entries.filter(e => favs.has(e.key) && onDay(e)), true, "還沒有收藏的攤位<br>點選清單右側的 ★ 加入逛市集清單");
+  renderRows(entries.filter(e => e.zone === curZone && onDay(e)), false);
+}
+function matches(e){
+  if (!onDay(e)) return false;
+  const q = query.toLowerCase(), qu = query.toUpperCase().replace(/\s+/g,"").replace(/^(小木屋|木)/,"CB"), qb = normBooth(query);
+  if (e.booths.some(id => (id === qb && query.replace(/\D/g,"").length >= 2) || id.startsWith(qu) || label(id).toLowerCase().includes(q))) return true;
+  const b = e.brand; if (!b) return !!(BOOTH_NOTES[e.booths[0]] && BOOTH_NOTES[e.booths[0]].includes(query));
+  return [b.name,b.name_en,b.category,b.origin,b.desc].some(v => v && String(v).toLowerCase().includes(q));
+}
+function renderRows(res, grouped, emptyMsg){
+  const list = $("#list");
+  if (!res.length){ list.innerHTML = `<div class="empty">${emptyMsg || "找不到符合的品牌或攤位"}</div>`; return; }
+  let html = "", g = null;
+  res.forEach(e => {
+    if (grouped && e.zone !== g){ g = e.zone; const z = zoneObj(g);
+      html += `<div class="group-h"><span class="sw" style="background:${z.c}"></span>${z.name}<small>${z.type}・${res.filter(x=>x.zone===g).length}</small></div>`; }
+    const z = zoneObj(e.zone), b = e.brand, tags = e.booths.map(label).join("・");
+    html += `<div class="item${b?"":" pending"}" role="button" tabindex="0" data-key="${e.key}" aria-current="${selected===e.key}">
+      <span class="badge num" style="--zc:${z.fill}">${esc(e.booths.length>1?label(e.booths[0])+"+":label(e.booths[0]))}</span>
+      <span class="t"><b>${b?esc(b.name):esc(BOOTH_NOTES[e.booths[0]]||"本攤位暫無品牌")}</b><span>${b?esc([b.category,b.origin,b.days.length<DAYS.length?"僅 "+dayText(b.days):""].filter(Boolean).join("・")||tags):(e.booths.length>1?tags+"・":"")+eSub(e.booths[0])}</span></span>
+      <button class="fav" data-fav="${e.key}" aria-pressed="${favs.has(e.key)}" aria-label="加入逛市集清單">★</button></div>`;
+  });
+  list.innerHTML = html;
+}
+$("#list").addEventListener("click", e => {
+  const f = e.target.closest("[data-fav]"); if (f){ toggleFav(f.dataset.fav); return; }
+  const zc = e.target.closest("[data-zone]"); if (zc){ enterZone(zc.dataset.zone); return; }
+  const fc = e.target.closest("[data-fac]"); if (fc){ showFacility(fc.dataset.fac); return; }
+  const it = e.target.closest("[data-key]"); if (it) select(it.dataset.key, true);
+});
+$("#list").addEventListener("keydown", e => {
+  if (e.key!=="Enter" && e.key!==" ") return;
+  const d = e.target.dataset || {};
+  if (d.key){ e.preventDefault(); select(d.key,true); } else if (d.fac){ e.preventDefault(); showFacility(d.fac); }
+});
+$("#back").onclick = () => toOverview();
+function toggleFav(key){
+  favs.has(key) ? favs.delete(key) : favs.add(key);
+  store.set("coriander2026ch-favs", [...favs]); renderPanel(); drawFavs();
+  if (selected === key) renderCard();
+}
+
+/* ---------- modes ---------- */
+/* ---------- 上一頁：記錄瀏覽步驟 ---------- */
+const navStack = []; let restoring = false;
+const snap = () => ({mode, curZone, selected, fac: curFac});
+let curFac = null;
+function pushNav(){
+  if (restoring) return;
+  const s = snap(), t = navStack[navStack.length-1];
+  if (t && t.mode === s.mode && t.curZone === s.curZone && t.selected === s.selected && t.fac === s.fac) return;
+  navStack.push(s); if (navStack.length > 40) navStack.shift();
+}
+function navLabel(st){
+  if (!st || st.mode === "overview") return "全區地圖";
+  if (st.selected){ const e = entries.find(x => x.key === st.selected); return e ? label(e.booths[0]) : "上一頁"; }
+  if (st.curZone === "FAC") return "服務設施";
+  if (st.curZone === "FAV") return "逛市集清單";
+  const z = st.curZone && zoneObj(st.curZone); return z ? z.name : "上一頁";
+}
+function updateBack(){
+  const show = mode !== "overview" || !!selected;
+  $("#mapBack").classList.toggle("show", show);
+  $("#mapBackTxt").textContent = "回" + navLabel(navStack[navStack.length-1]);
+}
+function goBack(){
+  if (query){ $("#q").value = ""; query = ""; $("#clearQ").style.display = "none"; clearHits(); }
+  const st = navStack.pop();
+  restoring = true;
+  try{
+    if (!st || st.mode === "overview") toOverview();
+    else if (st.fac){ enterZone(st.curZone || "FAC"); showFacility(st.fac); }
+    else if (st.selected) select(st.selected, true);
+    else if (st.curZone) enterZone(st.curZone);
+    else toOverview();
+  } finally { restoring = false; }
+  updateBack();
+}
+$("#mapBack").onclick = goBack;
+$("#days").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-day]"); if (!b) return;
+  dayFilter = +b.dataset.day;
+  document.querySelectorAll("#days [data-day]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  if (query) runSearch(); else renderPanel();
+  if (selected){ const e = entries.find(x => x.key === selected); if (e && !onDay(e)){ const alt = pickBrand(e.booths[0]); if (alt && alt !== e && onDay(alt)) select(alt.key, false); } }
+});
+
+function enterZone(k, fly = true){
+  pushNav(); curFac = null;
+  mode = "detail"; curZone = k; selected = null; $("#card").classList.remove("show"); clearSel(); clearHits();
+  if (k === "FAC" || k === "FAV"){
+    showStage("ov"); setDim();
+    $("#hint").textContent = k === "FAC" ? "點選左側設施查看位置" : "我的逛市集清單";
+    if (fly){
+      const ids = k === "FAV" ? entries.filter(e => favs.has(e.key)).flatMap(e => e.booths) : [];
+      if (ids.length){ const P = ids.map(id => MAPS.ov.pos[id]); fitBox([Math.min(...P.map(p=>p[0])),Math.min(...P.map(p=>p[1])),Math.max(...P.map(p=>p[0])),Math.max(...P.map(p=>p[1]))], 140); }
+      else fitAll();
+    }
+  } else {
+    const was = cur; showStage(mapOfZone(k)); setDim();
+    $("#hint").textContent = "點選攤位查看品牌";
+    if (fly) fitBox(STAGE[cur].m.zones[k], 50, was !== cur, isMobile() && k !== "CB" ? 0.42 : 0);
+  }
+  renderPanel();
+  setHash(k === "FAV" ? "favorites" : k === "FAC" ? "facilities" : "zone-" + k.toLowerCase());
+  updateBack();
+}
+function toOverview(){
+  if (!restoring) navStack.length = 0; curFac = null;
+  mode = "overview"; curZone = null; selected = null;
+  $("#card").classList.remove("show"); clearSel(); clearHits();
+  const was = cur; showStage("ov"); setDim(); $("#hint").textContent = "點選分區查看攤位";
+  renderPanel(); fitAll(was !== "ov"); setHash(""); updateBack();
+}
+function setHash(h){ try{ history.replaceState(null, "", h ? "#"+h : location.pathname + location.search); }catch(_){} }
+
+/* ---------- overlays ---------- */
+function clearSel(){ Object.values(STAGE).forEach(S => S.g.sel.innerHTML = ""); }
+function clearHits(){ Object.values(STAGE).forEach(S => S.g.hit.innerHTML = ""); }
+function ring(S, g, id, cls, extra){
+  const [x,y] = S.m.pos[id]; const R = S.R + (extra||0);
+  const cw = S.R*0.95, ch = S.R*1.4; return id.startsWith("CB") ? el("rect",{x:x-cw-(extra||0),y:y-ch*0.7-(extra||0),width:cw*2+(extra||0)*2,height:ch*2+(extra||0)*2,rx:12,class:cls},g)
+                             : el("circle",{cx:x,cy:y,r:R,class:cls},g);
+}
+function drawFavs(){
+  Object.values(STAGE).forEach(S => {
+    S.g.fav.innerHTML = "";
+    entries.filter(e => favs.has(e.key)).forEach(e => e.booths.forEach(id => { const p = S.m.pos[id]; if (p) el("circle",{cx:p[0]+S.R*0.75,cy:p[1]-S.R*0.75,r:S.R*0.35,class:"favmark"},S.g.fav); }));
+  });
+}
+function showFacility(id){
+  const f = FACILITIES.find(x => x.id === id); if (!f) return;
+  pushNav(); curFac = id; if (curZone !== "FAC"){ mode = "detail"; curZone = "FAC"; }
+  showStage("ov"); clearHits(); clearSel(); $("#card").classList.remove("show");
+  f.pts.forEach(([x,y]) => el("circle",{cx:x,cy:y,r:70,class:"hit"},STAGE.ov.g.hit));
+  document.querySelectorAll(".item[data-fac]").forEach(n => n.setAttribute("aria-current", n.dataset.fac === id));
+  const xs = f.pts.map(p=>p[0]), ys = f.pts.map(p=>p[1]);
+  fitBox([Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)], 230); updateBack();
+}
+
+/* ---------- search ---------- */
+let qt;
+$("#q").addEventListener("input", e => {
+  query = e.target.value.trim(); $("#clearQ").style.display = query ? "block" : "none";
+  clearTimeout(qt); qt = setTimeout(runSearch, 120);
+});
+function runSearch(){
+  clearHits();
+  if (!query){ if (curZone) enterZone(curZone, false); else toOverview(); return; }
+  const res = entries.filter(matches), ids = [...new Set(res.flatMap(e => e.booths))];
+  renderPanel();
+  const qn = normBooth(query);
+  const exact = /^[A-C]\d\d$/.test(qn) && query.replace(/\D/g,"").length >= 2 ? entries.find(x => x.booths.includes(qn)) : null;
+  if (exact){ select(exact.key, true); return; }
+  showStage("ov"); mode = "detail"; curZone = null; setDim();
+  $("#hint").textContent = `找到 ${ids.length} 個攤位`; updateBack();
+  ids.forEach(id => ring(STAGE.ov, STAGE.ov.g.hit, id, "hit", 2));
+  if (ids.length && ids.length < 150){ const P = ids.map(id => MAPS.ov.pos[id]); fitBox([Math.min(...P.map(p=>p[0])),Math.min(...P.map(p=>p[1])),Math.max(...P.map(p=>p[0])),Math.max(...P.map(p=>p[1]))], 120); }
+}
+$("#clearQ").addEventListener("click", e => { e.preventDefault(); $("#q").value=""; query=""; $("#clearQ").style.display="none"; clearHits();
+  if (curZone) enterZone(curZone, false); else toOverview(); });
+
+/* ---------- selection & card ---------- */
+function select(key, fly){
+  const e = entries.find(x => x.key === key); if (!e) return;
+  if (selected !== key) pushNav(); curFac = null;
+  const was = cur;
+  if (!query && curZone !== "FAV" && curZone !== e.zone){ mode = "detail"; curZone = e.zone; renderPanel(); }
+  if (curZone !== "FAV" || !query) { showStage(mapOfZone(e.zone)); }
+  if (curZone === e.zone) setDim();
+  selected = key; clearSel();
+  const S = STAGE[cur];
+  e.booths.forEach(id => { if (S.m.pos[id]){ ring(S, S.g.sel, id, "sel1", 3); ring(S, S.g.sel, id, "sel2", 3); } });
+  renderCard();
+  document.querySelectorAll(".item[data-key]").forEach(n => n.setAttribute("aria-current", n.dataset.key===key));
+  const pts = e.booths.map(id => S.m.pos[id]).filter(Boolean);
+  if (fly || was !== cur) flyToPts(pts, Math.max(was === cur ? view.s : 0, isMobile() ? 0.8 : 1));
+  setHash(e.booths[0].startsWith("CB") ? "W" + e.booths[0].slice(2) : e.booths[0]);
+  updateBack();
+}
+function renderCard(){
+  const e = entries.find(x => x.key === selected), card = $("#card");
+  if (!e){ card.classList.remove("show"); return; }
+  const b = e.brand, z = zoneObj(e.zone);
+  const tag = `<span class="boothtag" style="--zc:${z.c}"><i class="sw"></i>${z.name}・<span class="num">${e.booths.map(label).join(" / ")}</span></span>`;
+  const links = b ? [["ig","Instagram"],["ig2","Instagram"],["fb","Facebook"],["web","相關連結"]].filter(([k]) => safeUrl(b[k])).map(([k,n]) => `<a href="${esc(safeUrl(b[k]))}" target="_blank" rel="noopener">${n} ↗</a>`).join("") : "";
+  const others = sameBooth(e);
+  const share = others.length ? `<div class="share">此攤位依日期由不同品牌使用：${others.map(o => `<button data-go="${o.key}">${esc(o.brand.name)}（${dayText(o.brand.days)}）</button>`).join("、")}</div>` : "";
+  const dateRow = b ? `<div class="dates">${DAYS.map(d => `<span class="${b.days.includes(d)?"on":""}">11/${d}</span>`).join("")}</div>` : "";
+  const hasLogo = b && (safeUrl(b.logo) || /^data:image\//.test(b.logo||""));
+  const logo = hasLogo ? `<img src="${esc(b.logo)}" alt="">` : (b ? esc(b.name.slice(0,1)) : "?");
+  card.innerHTML = `<button class="x" aria-label="關閉">×</button>${tag}
+    <div class="row"><div class="logo">${logo}</div><div style="min-width:0">
+      <h3>${b ? esc(b.name) : esc(BOOTH_NOTES[e.booths[0]] || "本攤位暫無品牌")}</h3>
+      <div class="sub">${b ? esc([b.name_en,b.category,b.origin,b.type?b.type+"品牌":""].filter(Boolean).join("・")) : eSub(e.booths[0]) + (BOOTH_NOTES[e.booths[0]] ? "・本攤位本次暫停" : "")}</div></div></div>
+    ${dateRow}${share}
+    ${b && b.desc ? `<p class="desc">${esc(b.desc)}</p>` : ""}
+    <div class="links">${links}
+      <button data-act="fav">${favs.has(e.key) ? "★ 已收藏" : "☆ 收藏"}</button>
+      <button data-act="link">複製攤位連結</button></div>`;
+  card.classList.add("show");
+}
+$("#card").addEventListener("click", ev => {
+  if (ev.target.closest(".x")){ $("#card").classList.remove("show"); selected=null; clearSel();
+    document.querySelectorAll(".item[data-key]").forEach(n => n.setAttribute("aria-current", false));
+    const t = navStack[navStack.length-1]; if (t && !t.selected && t.curZone === curZone) navStack.pop();
+    updateBack(); return; }
+  const go = ev.target.closest("[data-go]"); if (go){ select(go.dataset.go, false); return; }
+  const a = ev.target.closest("[data-act]"); if (!a) return;
+  if (a.dataset.act === "fav") toggleFav(selected);
+  if (a.dataset.act === "link"){
+    const e = entries.find(x => x.key === selected), id = e.booths[0];
+    const url = location.href.split("#")[0] + "#" + (id.startsWith("CB") ? "W" + id.slice(2) : id);
+    try{ navigator.clipboard.writeText(url).then(() => toast("已複製攤位連結"), () => toast("無法複製，請手動複製網址")); }catch(_){ toast("無法複製，請手動複製網址"); }
+  }
+});
+
+/* ---------- pointer ---------- */
+const pointers = new Map(); let pinch = null, moved = false, downAt = null;
+wrap.addEventListener("pointerdown", e => {
+  if (e.target.closest(".card,.tools,.mapbar")) return;
+  wrap.setPointerCapture(e.pointerId); pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  moved = false; downAt = {x:e.clientX, y:e.clientY}; cancelAnimationFrame(anim);
+  if (pointers.size === 2){ const [a,b] = [...pointers.values()]; pinch = {d:Math.hypot(a.x-b.x,a.y-b.y)}; }
+});
+wrap.addEventListener("pointermove", e => {
+  const r = wrap.getBoundingClientRect();
+  if (!pointers.has(e.pointerId)){ hover(e, r); return; }
+  const p = pointers.get(e.pointerId), dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  if (downAt && Math.hypot(e.clientX-downAt.x, e.clientY-downAt.y) > 6) moved = true;
+  if (pointers.size === 2 && pinch){
+    const [a,b] = [...pointers.values()], d = Math.hypot(a.x-b.x,a.y-b.y);
+    zoomAt((a.x+b.x)/2 - r.left, (a.y+b.y)/2 - r.top, d / pinch.d); pinch.d = d;
+  } else if (pointers.size === 1 && moved){ view.x += dx; view.y += dy; apply(); wrap.classList.add("dragging"); }
+});
+function up(e){
+  if (!pointers.has(e.pointerId)) return;
+  pointers.delete(e.pointerId); if (pointers.size < 2) pinch = null;
+  wrap.classList.remove("dragging");
+  if (!moved && downAt && pointers.size === 0){
+    const hit = document.elementFromPoint(e.clientX, e.clientY);
+    const id = hit && hit.dataset && hit.dataset.id, zone = hit && hit.dataset && hit.dataset.zone;
+    if (id){ const en = pickBrand(id) || entries.find(x => x.key === id); if (en){ if (query){ $("#clearQ").click(); } select(en.key, cur === "ov"); } }
+    else if (zone && cur === "ov") enterZone(zone);
+  }
+  downAt = null;
+}
+wrap.addEventListener("pointerup", up); wrap.addEventListener("pointercancel", up);
+wrap.addEventListener("wheel", e => { e.preventDefault(); const r = wrap.getBoundingClientRect(); zoomAt(e.clientX-r.left, e.clientY-r.top, Math.exp(-e.deltaY * 0.0018)); }, {passive:false});
+wrap.addEventListener("pointerleave", () => $("#tip").style.display = "none");
+function hover(e, r){
+  const tip = $("#tip"), d = e.target.dataset || {};
+  if (d.id){ const a = (brandByBooth[d.id] || []).filter(onDay); tip.innerHTML = `<b class="num">${label(d.id)}</b>　${a.length ? a.map(x => esc(x.brand.name) + (x.brand.days.length < DAYS.length ? `（${dayText(x.brand.days)}）` : "")).join(" / ") : esc(BOOTH_NOTES[d.id] || "暫無品牌")}`; }
+  else if (d.zone){ const z = zoneObj(d.zone); tip.innerHTML = `<b>${z.name}</b>　${z.type}・點選查看`; }
+  else { tip.style.display = "none"; return; }
+  tip.style.left = (e.clientX - r.left) + "px"; tip.style.top = (e.clientY - r.top) + "px"; tip.style.display = "block";
+}
+$("#zin").onclick = () => zoomAt(wrap.clientWidth/2, wrap.clientHeight/2, 1.5);
+$("#zout").onclick = () => zoomAt(wrap.clientWidth/2, wrap.clientHeight/2, 1/1.5);
+$("#zfit").onclick = () => { if (mode === "detail" && curZone && ZONES.some(z => z.k === curZone) && !query) fitBox(STAGE[cur].m.zones[curZone], 50, false, isMobile() && curZone !== "CB" ? 0.42 : 0); else toOverview(); };
+$("#jumpBtn").onclick = () => $("#app").scrollIntoView({behavior:"smooth"});
+addEventListener("resize", () => apply());
+
+/* ---------- init ---------- */
+STAGE.ov.el.classList.add("on");
+renderPanel(); drawFavs();
+requestAnimationFrame(() => { fitAll(true); openHash(); });
+function openHash(){
+  const h = decodeURIComponent(location.hash.slice(1)); if (!h) return;
+  if (h === "favorites"){ $("#app").scrollIntoView(); return enterZone("FAV"); }
+  if (h === "facilities"){ $("#app").scrollIntoView(); return enterZone("FAC"); }
+  const zm = h.match(/^zone-(a|b|c)$/i); if (zm){ $("#app").scrollIntoView(); return enterZone(zm[1].toUpperCase()); }
+  const id = normBooth(h.replace(/^W(\d)/i,"CB$1")), en = pickBrand(id) || entries.find(x => x.key === id);
+  if (en){ $("#app").scrollIntoView(); setTimeout(() => select(en.key, true), 60); }
+}
+addEventListener("hashchange", openHash);
+</script>
+</body>
+</html>
